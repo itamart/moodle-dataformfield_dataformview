@@ -1,0 +1,1 @@
+A dataform field that allows displaying within an entry the content of a view from the same or a different dataform activity.
