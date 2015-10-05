@@ -55,6 +55,8 @@ class dataformfield_dataformview_dataformview extends \mod_dataform\pluginbase\d
             'overrides' => array(
                 'groupmode' => $this->df->groupmode,
                 'currentgroup' => $this->df->currentgroup,
+                'currentuser' => $this->df->currentuser,
+                'individualized' => $this->df->individualized,
             ),
         );
 
@@ -192,7 +194,7 @@ class dataformfield_dataformview_dataformview extends \mod_dataform\pluginbase\d
         $config = (object) $this->config;
 
         // Complete missing properties of entry.
-        $entry->userid = !isset($entry->userid) ? $USER->id : $entry->userid;
+        $entry->userid = !isset($entry->userid) ? $this->df->currentuser : $entry->userid;
         $entry->groupid = !isset($entry->groupid) ? $this->df->currentgroup : $entry->groupid;
         $entry->state = !isset($entry->state) ? 0 : $entry->state;
 
@@ -225,6 +227,12 @@ class dataformfield_dataformview_dataformview extends \mod_dataform\pluginbase\d
         }
         // Apply overrides.
         $refdf = $this->ref_dataform;
+        if ($refdf->individualized != $config->overrides['individualized']) {
+            $filter->individualized = $config->overrides['individualized'];
+        }
+        if ($refdf->currentuser != $config->overrides['currentuser']) {
+            $filter->currentuser = $config->overrides['currentuser'];
+        }
         if ($refdf->groupmode != $config->overrides['groupmode']) {
             $filter->groupmode = $config->overrides['groupmode'];
             if (!$config->overrides['groupmode']) {

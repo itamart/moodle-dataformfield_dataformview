@@ -99,6 +99,10 @@ class dataformfield_dataformview_form extends \mod_dataform\pluginbase\dataformf
         $label = get_string('targetdataformoverrides', 'dataformfield_dataformview');
         $mform->addElement('header', 'targetdataformoverrideshdr', $label);
 
+        // Separate participants.
+        $label = get_string('separateparticipants', 'dataform');
+        $mform->addElement('selectyesno', 'config[overrides][individualized]', $label);
+
         // Group mode.
         $choices = array();
         $choices[NOGROUPS] = get_string('groupsnone', 'group');
