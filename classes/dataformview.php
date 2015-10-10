@@ -201,10 +201,12 @@ class dataformfield_dataformview_dataformview extends \mod_dataform\pluginbase\d
         // Generate the filter.
         $fm = \mod_dataform_filter_manager::instance($refdataform->id);
         if (!empty($config->reffilter)) {
-            $filter = $fm->get_filter_by_id($fid, array('view' => $refview));
+            $filter = $fm->get_filter_by_id($config->reffilter, array('view' => $refview));
         } else {
             $filter = $refview->filter;
         }
+        $filter = unserialize(serialize($filter));
+
         // Filter by entry author.
         if (!empty($config->filterby['userid'])) {
             $filter->users = array($entry->userid);
@@ -219,7 +221,7 @@ class dataformfield_dataformview_dataformview extends \mod_dataform\pluginbase\d
         }
         // Custom search.
         if ($customsearch = $this->prepare_custom_search($entry)) {
-            $filter->customsearch = serialize($customsearch);
+            $filter->append_search_options($customsearch);
         }
         // Custom sort.
         if ($customsort = $config->customsort) {
